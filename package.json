@@ -1,0 +1,19 @@
+{
+  "name": "back-end-for-app-userflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "database.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npx nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^5.0.0-alpha.2",
+    "mysql2": "^3.2.0",
+    "nodemon": "^2.0.22"
+  }
+}
