@@ -8,7 +8,7 @@ const pool = mysql.createPool({
     password: process.env.MYSQL_PASS,
     database: process.env.MYSQL_DB,
 }).promise();
-
+//Users get and post methods
 export async function getUsers(){
     const [rows] = await pool.query("SELECT * FROM users");
     return rows 
@@ -29,4 +29,26 @@ export async function createUser(username, email, phonenumber){
     `, [username, email, phonenumber]);
     const id = result.insertId;
     return getUser(id);
+}
+//Events get and post methods
+export async function getEvents() {
+    const [rows] = await pool.query("SELECT * FROM events");
+    return rows
+}
+
+export async function getEvent(id) {
+    const [rows] = await pool.query(`
+    SELECT * FROM events
+    WHERE id=?
+    `, [id])
+    return rows
+}
+
+export async function createEvent(title, description, startDate, endDate, userId) {
+    const [result] = await pool.query(`
+    INSERT INTO events (title, description, startDate, endDate, userId)
+    VALUES (?,?,?,?,?)
+    `, [title, description, startDate, endDate, userId]);
+    const id = result.insertId;
+    return getEvent(id);
 }
