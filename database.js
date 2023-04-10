@@ -36,11 +36,11 @@ export async function getEvents() {
     return rows
 }
 
-export async function getEvent(id) {
+export async function getEvent(userId) {
     const [rows] = await pool.query(`
     SELECT * FROM events
-    WHERE id=?
-    `, [id])
+    WHERE userId ?
+    `, [userId])
     return rows
 }
 
