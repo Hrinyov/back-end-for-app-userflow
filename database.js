@@ -39,7 +39,7 @@ export async function getEvents() {
 export async function getEvent(userId) {
     const [rows] = await pool.query(`
     SELECT * FROM events
-    WHERE userId ?
+    WHERE userId=?
     `, [userId])
     return rows
 }
@@ -52,3 +52,23 @@ export async function createEvent(title, description, startDate, endDate, userId
     const id = result.insertId;
     return getEvent(id);
 }
+
+export async function getUserId() {
+    const [rows] = await pool.query(`
+    SELECT * FROM users 
+    WHERE id=1
+    `)
+    return rows
+}
+
+export async function setUserId(userId) {
+    const [rows] = await pool.query(`
+    UPDATE userid
+    SET userId=?
+    WHERE id=1
+    `, [userId])
+    return rows
+}
+
+
+

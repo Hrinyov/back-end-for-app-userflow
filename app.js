@@ -1,6 +1,7 @@
 import express from 'express'
 import { getUser, getUsers, createUser} from './database.js';
 import { getEvent, getEvents, createEvent } from './database.js';
+import { getUserId, setUserId } from './database.js';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
@@ -44,6 +45,18 @@ app.post('/events', async (req, res) => {
     const { title, description, startDate, endDate, userId } = req.body;
     const event = await createEvent(title, description, startDate, endDate, userId);
     res.status(201).send(event);
+})
+
+app.get('/userid', async (req, res) => {
+        const id = req.params.id;
+        const userId = await getUserId();
+        res.send(userId);
+    })
+
+app.post('/userid', async (req, res) => {
+    const { userId } = req.body;
+    const result = await setUserId(userId);
+    res.status(200).send(result);
 })
 
 app.use((err, req, res, next) => {
