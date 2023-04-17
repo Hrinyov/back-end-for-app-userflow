@@ -53,22 +53,6 @@ export async function createEvent(title, description, startDate, endDate, userId
     return getEvent(id);
 }
 
-export async function getUserId() {
-    const [rows] = await pool.query(`
-    SELECT * FROM users 
-    WHERE id=1
-    `)
-    return rows
-}
-
-export async function setUserId(userId) {
-    const [rows] = await pool.query(`
-    UPDATE userid
-    SET userId=?
-    WHERE id=1
-    `, [userId])
-    return rows
-}
 
 
 
