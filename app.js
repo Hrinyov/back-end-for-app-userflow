@@ -40,19 +40,6 @@ app.get('/users', async (req, res) => {
     }
 })
 
-app.get('/users/:userId/events', async (req, res) => {
-    try {
-     const userId = req.params.userId;
-    const users = await prisma.user.findUnique({
-        where: { id: Number(userId) },
-        include: { events: true }
-    })
-    res.json(users)
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-})
 
 app.post('/users', async (req, res) => {
     try {
@@ -61,20 +48,49 @@ app.post('/users', async (req, res) => {
         })
         res.json(user)
     } catch (error) {
-        
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });  
     }
 })
 
 app.get('/events', async (req, res) => {
-    res.send('Ok');
+    try {
+        const events = await prisma.event.findMany({});
+        res.json(events)
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });  
+    }
 })
 
-app.get('/events/:id', async (req, res) => {
-    res.send('Ok');
+
+app.get('/events/:userId', async (req, res) => {
+    const {userId} = req.params
+    try {
+        const events = await prisma.event.findMany({
+           where: {
+            userId: Number(userId) },
+            include: { user: true }
+        });
+        res.json(events)
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 })
 
 app.post('/events', async (req, res) => {
-    res.send('Ok');
+    try {
+        const event = await prisma.event.create({
+            data: req.body
+        })
+        res.json(event)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 })
 
 app.use((err, req, res, next) => {
