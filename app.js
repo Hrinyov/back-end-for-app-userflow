@@ -42,11 +42,21 @@ app.get('/users', async (req, res) => {
 
 
 app.post('/users', async (req, res) => {
+    const { username } = req.body;
     try {
-        const user = await prisma.user.create({
-            data: req.body
-        })
-        res.sendStatus(201)
+        const existingUser = await prisma.user.findMany({
+            where: {
+                username: username
+            }
+        });
+        if (existingUser) {
+            res.sendStatus(409)
+        } else {
+            const event = await prisma.user.create({
+                data: req.body
+            })
+            res.sendStatus(201)
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });  
@@ -81,11 +91,13 @@ app.get('/events/:userId', async (req, res) => {
 })
 
 app.post('/events', async (req, res) => {
+    const { username, email } = req.body;
+    
     try {
         const event = await prisma.event.create({
             data: req.body
         })
-        res.sendStatus(201)
+        res.sendStatus(201)    
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
