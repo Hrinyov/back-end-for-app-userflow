@@ -46,7 +46,7 @@ app.post('/users', async (req, res) => {
         const user = await prisma.user.create({
             data: req.body
         })
-        res.json(user)
+        res.sendStatus(201)
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });  
@@ -70,8 +70,7 @@ app.get('/events/:userId', async (req, res) => {
     try {
         const events = await prisma.event.findMany({
            where: {
-            userId: Number(userId) },
-            include: { user: true }
+            userId: Number(userId) }
         });
         res.json(events)
 
@@ -86,7 +85,7 @@ app.post('/events', async (req, res) => {
         const event = await prisma.event.create({
             data: req.body
         })
-        res.json(event)
+        res.sendStatus(201)
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
